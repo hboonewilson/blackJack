@@ -1,11 +1,15 @@
 package blackJack.play;
 
 public class Card {
-    Face face;
-    Suit suit;
+    private Face face;
+    private Suit suit;
+
     Card(Face face, Suit suit){
         this.face = face;
         this.suit = suit;
+    }
+    public Face getFace() {
+        return face;
     }
 
     public String toString() {

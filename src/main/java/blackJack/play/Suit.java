@@ -5,7 +5,9 @@ public enum Suit {
     DIAMOND ("Diamond"),
     CLUB ("Club"),
     SPADE ("Spade"),;
+
     private final String name;
+
     private Suit(String s){
         name = s;
     }

@@ -6,6 +6,6 @@ public interface Pot {
 
     public void addToAmount(Integer amountToAdd);
 
-    public Integer removeFromAmount(Integer amountToRemove);
+
 
 }

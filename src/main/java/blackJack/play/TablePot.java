@@ -6,6 +6,9 @@ public class TablePot implements Pot{
 
     public TablePot(){}
 
+    public void wipe(){
+        amount = 0;
+    }
     public Integer getAmount() {
         return amount;
     }

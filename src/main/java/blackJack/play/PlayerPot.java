@@ -6,18 +6,27 @@ class PlayerPot implements Pot{
     public PlayerPot(Integer amount){
         this.amount = amount;
     }
+
     public PlayerPot(){
         this.amount = 25;
     }
+
     public Integer getAmount(){
         return this.amount;
     }
     public void addToAmount(Integer amountToAdd) {
         this.amount += amountToAdd;
     }
-    public Integer removeFromAmount(Integer amountToRemove) {
-        this.amount -= amountToRemove;
-        return this.amount;
+
+    public Boolean wager(Integer amountToRemove) {
+        if (amountToRemove > amount){
+            return false;
+        }
+        else{
+            this.amount -= amountToRemove;
+            return true;
+        }
+
     }
 
 }

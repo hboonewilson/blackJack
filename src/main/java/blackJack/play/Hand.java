@@ -23,7 +23,6 @@ public class Hand {
             sum = reduceByAces(sum);
         }
         handValue = sum;
-
     }
 
     private int reduceByAces(int sum) {
@@ -55,8 +54,5 @@ public class Hand {
         }
         return strings;
     }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
+    
 }

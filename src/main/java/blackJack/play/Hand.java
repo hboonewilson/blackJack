@@ -26,7 +26,7 @@ public class Hand {
 
     }
 
-    public int reduceByAces(int sum) {
+    private int reduceByAces(int sum) {
         int summary = sum;
         int aceCount = 0;
         for(Card card : cards){

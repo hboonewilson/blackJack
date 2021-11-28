@@ -1,5 +1,7 @@
 package blackJack.play;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class PlayHand {
@@ -9,12 +11,17 @@ public class PlayHand {
     int numberOfDecks;
     Deck theDeck;
     TablePot theTablePot;
+    Hand playerHand;
+    Hand tableHand;
+    UserInput userInput;
+    PrintObject printObject;
 
     public PlayHand(Deck deck, PlayerPot playerPot, int numOfDecks){
         theDeck = deck;
         numberOfDecks = numOfDecks;
         thePlayerPot = playerPot;
         theTablePot = new TablePot();
+        userInput = new UserInput();
         setwager();
     }
 
@@ -38,8 +45,27 @@ public class PlayHand {
                 theDeck = new Deck(numberOfDecks);
             }
             else{
+                playerHand = new Hand();
+                playerHand.addCard(theDeck.draw());
+                playerHand.addCard(theDeck.draw());
 
+                tableHand = new Hand();
+                tableHand.addCard(theDeck.draw());
+                tableHand.addCard(theDeck.draw());
 
+                PrintObject printObject = new PrintObject(playerHand, tableHand);
+                printObject.printPlayerAndTableHandsAndInfo();
+
+                Boolean hitMe = userInput.checkHitMe();
+                while(hitMe){
+                    playerHand.addCard(theDeck.draw());
+                    printObject.printPlayerAndTableHandsAndInfo();
+                    hitMe = userInput.checkHitMe();
+                }
+                while(!tableHand.checkIfBust() && playerHand.checkIfCloser(tableHand.getHandValue())){
+                    playerHand.addCard(theDeck.draw());
+                }
+                printObject.printPlayerAndTableHandsAndInfo();
             }
         }
         return theDeck;

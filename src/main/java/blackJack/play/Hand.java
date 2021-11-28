@@ -10,6 +10,7 @@ public class Hand {
     private HashMap<Face, Integer> values = Values.createMap();
     private List<Card> cards = new ArrayList<>();
 
+    public Hand(){}
     public void addCard(Card card){
         cards.add(card);
     }
@@ -54,5 +55,11 @@ public class Hand {
         }
         return strings;
     }
-    
+
+    public Boolean checkIfBust(){
+        return handValue > 21;
+    }
+    public Boolean checkIfCloser(Integer opposingNum){
+        return opposingNum < handValue;
+    }
 }

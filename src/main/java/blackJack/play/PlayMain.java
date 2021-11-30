@@ -10,7 +10,7 @@ public class PlayMain {
 
         Integer numberOfDecks = userInput.deckNumber();
         Deck theDeck = new Deck(numberOfDecks);
-        System.out.printf("Initialized with %d cards.%n", theDeck.getSize());
+        System.out.printf("Initialized with %d cards.%n%n", theDeck.getSize());
 
         PlayerPot playerPot = new PlayerPot();
         Boolean playing = userInput.checkGameState();

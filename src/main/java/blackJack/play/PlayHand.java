@@ -1,7 +1,4 @@
 package blackJack.play;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class PlayHand {
@@ -13,7 +10,6 @@ public class PlayHand {
     private TablePot theTablePot;
     private Hand playerHand;
     private Hand tableHand;
-    private PrintObject printObject;
     private PrintDeckState printDeckState;
 
     public PlayHand(Deck deck, PlayerPot playerPot, int numOfDecks){
@@ -32,13 +28,13 @@ public class PlayHand {
         int number = 0;
         while(!wageSet){
             Scanner scanner = new Scanner(System.in);
-            System.out.print("Wager: ");
+            System.out.printf("%nWager(You have %d left): ", thePlayerPot.getAmount());
             wager = scanner.nextInt();
             wageSet = thePlayerPot.wager(wager);
         }
         theTablePot.addToAmount(wager*2);
         System.out.println("Wage set: " + wager);
-        System.out.println("In the pot: " + theTablePot.getAmount());
+        System.out.println("In the pot: " + theTablePot.getAmount()+"\n");
     }
     public Deck play(){
             if(theDeck.getSize() < 4){

@@ -18,11 +18,12 @@ public class PrintObject {
         for (String card : player){
             System.out.println(card);
         }
+        System.out.println();
         System.out.printf("Table Hand (%d): %n", tableHand.getHandValue());
         for (String card : table){
             System.out.println(card);
         }
-
+        System.out.println();
     }
 
 }

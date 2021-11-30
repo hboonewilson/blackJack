@@ -1,8 +1,8 @@
 package blackJack.play;
 
 public class Card {
-    private Face face;
-    private Suit suit;
+    private final Face face;
+    private final Suit suit;
 
     Card(Face face, Suit suit){
         this.face = face;

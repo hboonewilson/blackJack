@@ -24,17 +24,17 @@ public class PlayHand {
         thePlayerPot = playerPot;
         theTablePot = new TablePot();
         printDeckState = new PrintDeckState(thePlayerPot);
-        setwager();
+
     }
 
-    private void setwager() {
+    public void setWager() {
         boolean wageSet = false;
         int number = 0;
         while(!wageSet){
             Scanner scanner = new Scanner(System.in);
             System.out.print("Wager: ");
             wager = scanner.nextInt();
-            wageSet = thePlayerPot.wager(number);
+            wageSet = thePlayerPot.wager(wager);
         }
         theTablePot.addToAmount(wager*2);
         System.out.println("Wage set: " + wager);

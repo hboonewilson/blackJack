@@ -16,6 +16,7 @@ public class PlayMain {
         Boolean playing = userInput.checkGameState();
         while(playing){
             PlayHand hand = new PlayHand(theDeck, playerPot, numberOfDecks);
+            hand.setWager();
             hand.play();
             hand.determineWinner();
             System.out.printf("Player");

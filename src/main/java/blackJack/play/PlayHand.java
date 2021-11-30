@@ -44,15 +44,15 @@ public class PlayHand {
                 playerHand = new Hand();
                 playerHand.addCard(theDeck.draw());
                 playerHand.addCard(theDeck.draw());
-                playerHand.setHandValue();
+
 
                 tableHand = new Hand();
                 tableHand.addCard(theDeck.draw());
                 tableHand.addCard(theDeck.draw());
-                tableHand.setHandValue();
+
 
                 PrintObject printObject = new PrintObject(playerHand, tableHand);
-                printObject.printPlayerAndTableHandsAndInfo();
+                printObject.printPlayerAndSomeTableHand();
 
                 Boolean hitMe = USER_INPUT.checkHitMe();
                 while(hitMe){
@@ -60,45 +60,63 @@ public class PlayHand {
                     if(playerHand.checkIfBust()){
                         return theDeck;
                     }
-                    printObject.printPlayerAndTableHandsAndInfo();
+                    printObject.printPlayerAndSomeTableHand();
                     hitMe = USER_INPUT.checkHitMe();
                 }
-                boolean tableBusted = tableHand.checkIfBust();
-                boolean tableCloserTo21 = tableHand.checkIfCloser(playerHand.getHandValue());
-                while(!tableBusted && !tableCloserTo21){
+                Boolean overSeventeen = tableHand.checkIfOverSeventeen();
+                while(!overSeventeen){
                     tableHand.addCard(theDeck.draw());
-                    tableBusted = tableHand.checkIfBust();
-                    tableCloserTo21 = tableHand.checkIfCloser(playerHand.getHandValue());
+                    overSeventeen = tableHand.checkIfOverSeventeen();
                 }
                 printObject.printPlayerAndTableHandsAndInfo();
         return theDeck;
     }
 
     public void determineWinner() {
+        boolean tableWon = false;
         boolean playerWon = true;
         if(playerHand.checkIfBust()){
            System.out.println("player busted");
            playerWon = false;
+           tableWon = true;
        }
        else if (tableHand.checkIfBust()){
            System.out.println("table busted");
            playerWon = true;
+           tableWon = false;
        }
        else if (playerHand.checkIfCloser(tableHand.getHandValue())){
            System.out.println("player is closer to 21!");
            playerWon = true;
+           tableWon = false;
        }
        else if (tableHand.checkIfCloser(playerHand.getHandValue())){
            System.out.println("table is closer to 21!");
            playerWon = false;
+           tableWon = true;
        }
+       else if (tableHand.checkTie(playerHand.getHandValue())){
+           System.out.println("Push!");
+           tableWon = true;
+           playerWon = true;
+        }
 
 
 
-       if(playerWon){
-           thePlayerPot.addToAmount(theTablePot.getAmount());
+       if(tableWon && playerWon){
+           thePlayerPot.addToAmount(wager);
        }
-        theTablePot.wipe();
-        printDeckState.printHandEnding(playerWon);
+       else if (playerWon){
+           thePlayerPot.addToAmount(thePlayerPot.getAmount());
+       }
+       printDeckState.printHandEnding(playerWon, tableWon);
+    }
+
+    public void setPlayerHand(Hand playerHand) {
+        this.playerHand = playerHand;
+    }
+
+    public void setTableHand(Hand tableHand) {
+        this.tableHand = tableHand;
     }
 }

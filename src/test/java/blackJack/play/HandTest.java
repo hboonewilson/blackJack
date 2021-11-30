@@ -17,9 +17,7 @@ class HandTest {
         hand.addCard(cardOne);
         hand.addCard(cardTwo);
         hand.addCard(cardThree);
-
-
-        hand.setHandValue();
+        
 
         Assertions.assertEquals(17, hand.getHandValue());
     }
@@ -38,8 +36,6 @@ class HandTest {
         hand.addCard(cardThree);
         hand.addCard(cardFour);
         hand.addCard(cardFive);
-
-        hand.setHandValue();
 
         Assertions.assertEquals(19, hand.getHandValue());
     }

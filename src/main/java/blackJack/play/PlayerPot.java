@@ -29,4 +29,7 @@ class PlayerPot implements Pot{
 
     }
 
+    public boolean checkIfOutOfMoney() {
+        return this.amount <= 0;
+    }
 }

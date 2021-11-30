@@ -1,7 +1,5 @@
 package blackJack.play;
 
-import java.util.Scanner;
-
 public class PlayMain {
 
     public static void main(String[] args){
@@ -13,14 +11,19 @@ public class PlayMain {
         System.out.printf("Initialized with %d cards.%n%n", theDeck.getSize());
 
         PlayerPot playerPot = new PlayerPot();
-        Boolean playing = userInput.checkGameState();
+        Boolean playing = true;
         while(playing){
             PlayHand hand = new PlayHand(theDeck, playerPot, numberOfDecks);
             hand.setWager();
             hand.play();
             hand.determineWinner();
-            System.out.printf("Player");
+            if(playerPot.checkIfOutOfMoney()){
+                System.out.println("You're out of Money. GameOver.");
+                playing = false;
+            }
+            else{
             playing = userInput.checkGameState();
+            }
         }
         System.out.println("Goodbye!");
     }

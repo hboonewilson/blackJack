@@ -10,6 +10,7 @@ public class PrintObject {
         this.playerHand = playerHand;
         this.tableHand = tableHand;
     }
+
     public void printPlayerAndTableHandsAndInfo(){
         List<String> player = playerHand.getCards();
         List<String> table = tableHand.getCards();
@@ -23,4 +24,5 @@ public class PrintObject {
         }
 
     }
+
 }

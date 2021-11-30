@@ -57,9 +57,11 @@ public class Hand {
     }
 
     public Boolean checkIfBust(){
+        setHandValue();
         return handValue > 21;
     }
     public Boolean checkIfCloser(Integer opposingNum){
+        setHandValue();
         return opposingNum < handValue;
     }
 }

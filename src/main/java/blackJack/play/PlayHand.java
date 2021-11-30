@@ -5,23 +5,25 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PlayHand {
-
-    int wager;
-    PlayerPot thePlayerPot;
-    int numberOfDecks;
-    Deck theDeck;
-    TablePot theTablePot;
-    Hand playerHand;
-    Hand tableHand;
-    UserInput userInput;
-    PrintObject printObject;
+    private final int NUM_DECKS;
+    private final UserInput USER_INPUT;
+    private int wager;
+    private PlayerPot thePlayerPot;
+    private Deck theDeck;
+    private TablePot theTablePot;
+    private Hand playerHand;
+    private Hand tableHand;
+    private PrintObject printObject;
+    private PrintDeckState printDeckState;
 
     public PlayHand(Deck deck, PlayerPot playerPot, int numOfDecks){
+        NUM_DECKS = numOfDecks;
+        USER_INPUT = new UserInput();
         theDeck = deck;
-        numberOfDecks = numOfDecks;
+        theDeck.shuffle();
         thePlayerPot = playerPot;
         theTablePot = new TablePot();
-        userInput = new UserInput();
+        printDeckState = new PrintDeckState(thePlayerPot);
         setwager();
     }
 
@@ -39,35 +41,68 @@ public class PlayHand {
         System.out.println("In the pot: " + theTablePot.getAmount());
     }
     public Deck play(){
-        boolean gameState = true;
-        while(gameState){
             if(theDeck.getSize() < 4){
-                theDeck = new Deck(numberOfDecks);
+                theDeck = new Deck(NUM_DECKS);
+                theDeck.shuffle();
             }
-            else{
                 playerHand = new Hand();
                 playerHand.addCard(theDeck.draw());
                 playerHand.addCard(theDeck.draw());
+                playerHand.setHandValue();
 
                 tableHand = new Hand();
                 tableHand.addCard(theDeck.draw());
                 tableHand.addCard(theDeck.draw());
+                tableHand.setHandValue();
 
                 PrintObject printObject = new PrintObject(playerHand, tableHand);
                 printObject.printPlayerAndTableHandsAndInfo();
 
-                Boolean hitMe = userInput.checkHitMe();
+                Boolean hitMe = USER_INPUT.checkHitMe();
                 while(hitMe){
                     playerHand.addCard(theDeck.draw());
+                    if(playerHand.checkIfBust()){
+                        return theDeck;
+                    }
                     printObject.printPlayerAndTableHandsAndInfo();
-                    hitMe = userInput.checkHitMe();
+                    hitMe = USER_INPUT.checkHitMe();
                 }
-                while(!tableHand.checkIfBust() && playerHand.checkIfCloser(tableHand.getHandValue())){
-                    playerHand.addCard(theDeck.draw());
+                boolean tableBusted = tableHand.checkIfBust();
+                boolean tableCloserTo21 = tableHand.checkIfCloser(playerHand.getHandValue());
+                while(!tableBusted && !tableCloserTo21){
+                    tableHand.addCard(theDeck.draw());
+                    tableBusted = tableHand.checkIfBust();
+                    tableCloserTo21 = tableHand.checkIfCloser(playerHand.getHandValue());
                 }
                 printObject.printPlayerAndTableHandsAndInfo();
-            }
-        }
         return theDeck;
+    }
+
+    public void determineWinner() {
+        boolean playerWon = true;
+        if(playerHand.checkIfBust()){
+           System.out.println("player busted");
+           playerWon = false;
+       }
+       else if (tableHand.checkIfBust()){
+           System.out.println("table busted");
+           playerWon = true;
+       }
+       else if (playerHand.checkIfCloser(tableHand.getHandValue())){
+           System.out.println("player is closer to 21!");
+           playerWon = true;
+       }
+       else if (tableHand.checkIfCloser(playerHand.getHandValue())){
+           System.out.println("table is closer to 21!");
+           playerWon = false;
+       }
+
+
+
+       if(playerWon){
+           thePlayerPot.addToAmount(theTablePot.getAmount());
+       }
+        theTablePot.wipe();
+        printDeckState.printHandEnding(playerWon);
     }
 }

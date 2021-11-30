@@ -43,5 +43,19 @@ class HandTest {
 
         Assertions.assertEquals(19, hand.getHandValue());
     }
+    @Test
+    void givenCheckBust_shouldReturnTrueIfOverTwentyOne(){
+        Hand hand = new Hand();
+        hand.addCard(new Card(Face.KING, Suit.CLUB));
+        hand.addCard(new Card(Face.KING, Suit.CLUB));
+        hand.addCard(new Card(Face.KING, Suit.CLUB));
+
+        Hand twoHand = new Hand();
+        twoHand.addCard(new Card(Face.KING, Suit.CLUB));
+        twoHand.addCard(new Card(Face.KING, Suit.CLUB));
+
+        Assertions.assertTrue(hand.checkIfBust());
+        Assertions.assertFalse(twoHand.checkIfBust());
+    }
 
 }

@@ -33,8 +33,42 @@ public class UserInput {
         }
         return false;
     }
+    public Boolean checkGameState(){
+        Boolean gameGoing = false;
+        while(!gameGoing){
+            System.out.println("Would you like to play another Hand?");
+            String input = scanner.nextLine();
+            if (positive.contains(input.toLowerCase())){
+                return true;
+            }
+            else if (negative.contains(input.toLowerCase())){
+                return false;
+            }
+            else{
+                System.out.println("Sorry I didn't understand that input.");
+            }
+        }
+        return false;
+    }
+    public Integer deckNumber(){
+        Boolean decided = false;
+        Integer integerInput = null;
+        while(!decided){
+            System.out.println("How many Decks?");
+            String input = scanner.nextLine();
+            try{
+                integerInput = Integer.parseInt(input);
+                decided = true;
+            }
+            catch (NumberFormatException nfe){
+                decided = false;
+            }
+        }
+        return integerInput;
+    }
     public static void main(String[] args){
         UserInput userInput = new UserInput();
-        System.out.println(userInput.checkHitMe());
+        System.out.println(userInput.checkGameState());
     }
+
 }

@@ -1,5 +1,5 @@
 /.idea
 PokerGame.iml
-target/*
+*/target/*
+target/
 src/main/java/blackJack/.DS_Store
-

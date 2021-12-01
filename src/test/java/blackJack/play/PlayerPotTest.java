@@ -9,7 +9,7 @@ class PlayerPotTest {
     @Test
     void givenWagerReturnsTheCorrectBool(){
         PlayerPot playerPot = new PlayerPot();
-        Assertions.assertFalse(playerPot.wager(30));
+        Assertions.assertFalse(playerPot.wager(400));
         Assertions.assertTrue(playerPot.wager(10));
     }
 

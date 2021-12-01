@@ -4,69 +4,72 @@ import java.util.Scanner;
 public class PlayHand {
     private final int NUM_DECKS;
     private final UserInput USER_INPUT;
+    private final PlayerPot THE_PLAYER_POT;
+    private final TablePot THE_TABLE_POT;
+    private final PrintDeckState PRINT_DECK_STATE;
+    private final Hand PLAYER_HAND;
+    private final Hand TABLE_HAND;
+
+
     private int wager;
-    private PlayerPot thePlayerPot;
     private Deck theDeck;
-    private TablePot theTablePot;
-    private Hand playerHand;
-    private Hand tableHand;
-    private PrintDeckState printDeckState;
+
 
     public PlayHand(Deck deck, PlayerPot playerPot, int numOfDecks){
         NUM_DECKS = numOfDecks;
         USER_INPUT = new UserInput();
+        THE_PLAYER_POT = playerPot;
+        THE_TABLE_POT = new TablePot();
+        PRINT_DECK_STATE = new PrintDeckState(THE_PLAYER_POT);
+        TABLE_HAND = new Hand();
+        PLAYER_HAND = new Hand();
+
         theDeck = deck;
         theDeck.shuffle();
-        thePlayerPot = playerPot;
-        theTablePot = new TablePot();
-        printDeckState = new PrintDeckState(thePlayerPot);
 
     }
 
     public void setWager() {
         boolean wageSet = false;
-        int number = 0;
         while(!wageSet){
             Scanner scanner = new Scanner(System.in);
-            System.out.printf("%nWager(You have %d left): ", thePlayerPot.getAmount());
+            System.out.printf("%nWager(You have %d left): ", THE_PLAYER_POT.getAmount());
             wager = scanner.nextInt();
-            wageSet = thePlayerPot.wager(wager);
+            wageSet = THE_PLAYER_POT.wager(wager);
         }
-        theTablePot.addToAmount(wager*2);
+        THE_TABLE_POT.addToAmount(wager*2);
         System.out.println("Wage set: " + wager);
-        System.out.println("In the pot: " + theTablePot.getAmount()+"\n");
+        System.out.println("In the pot: " + THE_TABLE_POT.getAmount()+"\n");
     }
     public Deck play(){
-            if(theDeck.getSize() < 4){
+            if(theDeck.getSize() < 10){
                 theDeck = new Deck(NUM_DECKS);
                 theDeck.shuffle();
             }
-                playerHand = new Hand();
-                playerHand.addCard(theDeck.draw());
-                playerHand.addCard(theDeck.draw());
+                PLAYER_HAND.addCard(theDeck.draw());
+                PLAYER_HAND.addCard(theDeck.draw());
 
 
-                tableHand = new Hand();
-                tableHand.addCard(theDeck.draw());
-                tableHand.addCard(theDeck.draw());
+                TABLE_HAND.addCard(theDeck.draw());
+                TABLE_HAND.addCard(theDeck.draw());
 
 
-                PrintObject printObject = new PrintObject(playerHand, tableHand);
+                PrintObject printObject = new PrintObject(PLAYER_HAND, TABLE_HAND);
                 printObject.printPlayerAndSomeTableHand();
                 dblDown(USER_INPUT.checkIfDoubleDown());
                 Boolean hitMe = USER_INPUT.checkHitMe();
                 while(hitMe){
-                    playerHand.addCard(theDeck.draw());
-                    if(playerHand.checkIfBust()){
+                    PLAYER_HAND.addCard(theDeck.draw());
+                    if(PLAYER_HAND.checkIfBust()){
                         return theDeck;
                     }
                     printObject.printPlayerAndSomeTableHand();
                     hitMe = USER_INPUT.checkHitMe();
                 }
-                Boolean overSeventeen = tableHand.checkIfOverSeventeen();
+                Boolean overSeventeen = TABLE_HAND.checkIfOverSeventeen();
                 while(!overSeventeen){
-                    tableHand.addCard(theDeck.draw());
-                    overSeventeen = tableHand.checkIfOverSeventeen();
+                    TABLE_HAND.addCard(theDeck.draw());
+                    overSeventeen = TABLE_HAND.checkIfOverSeventeen();
                 }
                 printObject.printPlayerAndTableHandsAndInfo();
         return theDeck;
@@ -75,27 +78,27 @@ public class PlayHand {
     public void determineWinner() {
         boolean tableWon = false;
         boolean playerWon = true;
-        if(playerHand.checkIfBust()){
+        if(PLAYER_HAND.checkIfBust()){
            System.out.println("player busted");
            playerWon = false;
            tableWon = true;
        }
-       else if (tableHand.checkIfBust()){
+       else if (TABLE_HAND.checkIfBust()){
            System.out.println("table busted");
            playerWon = true;
            tableWon = false;
        }
-       else if (playerHand.checkIfCloser(tableHand.getHandValue())){
+       else if (PLAYER_HAND.checkIfCloser(TABLE_HAND.getHandValue())){
            System.out.println("player is closer to 21!");
            playerWon = true;
            tableWon = false;
        }
-       else if (tableHand.checkIfCloser(playerHand.getHandValue())){
+       else if (TABLE_HAND.checkIfCloser(PLAYER_HAND.getHandValue())){
            System.out.println("table is closer to 21!");
            playerWon = false;
            tableWon = true;
        }
-       else if (tableHand.checkTie(playerHand.getHandValue())){
+       else if (TABLE_HAND.checkTie(PLAYER_HAND.getHandValue())){
            System.out.println("Push!");
            tableWon = true;
            playerWon = true;
@@ -103,35 +106,25 @@ public class PlayHand {
 
 
        if(tableWon && playerWon){
-           thePlayerPot.addToAmount(wager);
+           THE_PLAYER_POT.addToAmount(wager);
        }
        else if (playerWon){
-           thePlayerPot.addToAmount(theTablePot.getAmount());
+           THE_PLAYER_POT.addToAmount(THE_TABLE_POT.getAmount());
        }
-       printDeckState.printHandEnding(playerWon, tableWon);
-    }
-
-
-
-    public void setPlayerHand(Hand playerHand) {
-        this.playerHand = playerHand;
-    }
-
-    public void setTableHand(Hand tableHand) {
-        this.tableHand = tableHand;
+       PRINT_DECK_STATE.printHandEnding(playerWon, tableWon);
     }
 
     private void dblDown(Boolean checkIfDoubleDown) {
         if (checkIfDoubleDown){
-            if(thePlayerPot.wager(wager)){
+            if(THE_PLAYER_POT.wager(wager)){
                 System.out.println("Doubling Down!");
-                theTablePot.addToAmount(wager*2);
+                THE_TABLE_POT.addToAmount(wager*2);
                 System.out.println("Wage set: " + wager);
-                System.out.println("In the pot: " + theTablePot.getAmount()+"\n");
+                System.out.println("In the pot: " + THE_TABLE_POT.getAmount()+"\n");
             }
             else{
                 System.out.println("Not enough to double down.");
-                System.out.println("Money left: " + thePlayerPot.getAmount());
+                System.out.println("Money left: " + THE_PLAYER_POT.getAmount());
             }
         }
     }

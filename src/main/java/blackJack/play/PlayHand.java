@@ -53,7 +53,7 @@ public class PlayHand {
 
                 PrintObject printObject = new PrintObject(playerHand, tableHand);
                 printObject.printPlayerAndSomeTableHand();
-
+                dblDown(USER_INPUT.checkIfDoubleDown());
                 Boolean hitMe = USER_INPUT.checkHitMe();
                 while(hitMe){
                     playerHand.addCard(theDeck.draw());
@@ -102,15 +102,16 @@ public class PlayHand {
         }
 
 
-
        if(tableWon && playerWon){
            thePlayerPot.addToAmount(wager);
        }
        else if (playerWon){
-           thePlayerPot.addToAmount(thePlayerPot.getAmount());
+           thePlayerPot.addToAmount(theTablePot.getAmount());
        }
        printDeckState.printHandEnding(playerWon, tableWon);
     }
+
+
 
     public void setPlayerHand(Hand playerHand) {
         this.playerHand = playerHand;
@@ -118,5 +119,20 @@ public class PlayHand {
 
     public void setTableHand(Hand tableHand) {
         this.tableHand = tableHand;
+    }
+
+    private void dblDown(Boolean checkIfDoubleDown) {
+        if (checkIfDoubleDown){
+            if(thePlayerPot.wager(wager)){
+                System.out.println("Doubling Down!");
+                theTablePot.addToAmount(wager*2);
+                System.out.println("Wage set: " + wager);
+                System.out.println("In the pot: " + theTablePot.getAmount()+"\n");
+            }
+            else{
+                System.out.println("Not enough to double down.");
+                System.out.println("Money left: " + thePlayerPot.getAmount());
+            }
+        }
     }
 }

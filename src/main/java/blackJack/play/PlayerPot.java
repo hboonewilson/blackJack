@@ -8,7 +8,7 @@ class PlayerPot implements Pot{
     }
 
     public PlayerPot(){
-        this.amount = 25;
+        this.amount = 200;
     }
 
     public Integer getAmount(){

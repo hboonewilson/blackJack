@@ -5,26 +5,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserInput {
-    private List<String> positive = new ArrayList<String>();
-    private List<String> negative = new ArrayList<String>();
-    private Scanner scanner = new Scanner(System.in);
+    private final List<String> POSITIVE = new ArrayList<String>();
+    private final List<String> NEGATIVE = new ArrayList<String>();
+    private final List<String> DOUBLE_DOWN = new ArrayList<>();
+    private final Scanner SCANNER = new Scanner(System.in);
+
     UserInput(){
 
-        positive.add("y");
-        positive.add("yes");
+        POSITIVE.add("y");
+        POSITIVE.add("yes");
 
-        negative.add("n");
-        negative.add("no");
+        NEGATIVE.add("n");
+        NEGATIVE.add("no");
+
+        DOUBLE_DOWN.add("d");
+        DOUBLE_DOWN.add("double");
     }
     public Boolean checkHitMe() {
-        Boolean resolved = false;
+        boolean resolved = false;
         while(!resolved){
             System.out.println("Would you like to hit?");
-            String input = scanner.nextLine();
-            if (positive.contains(input.toLowerCase())){
+            String input = SCANNER.nextLine();
+            if (POSITIVE.contains(input.toLowerCase())){
                 return true;
             }
-            else if (negative.contains(input.toLowerCase())){
+            else if (NEGATIVE.contains(input.toLowerCase())){
                 return false;
             }
             else{
@@ -34,14 +39,14 @@ public class UserInput {
         return false;
     }
     public Boolean checkGameState(){
-        Boolean gameGoing = false;
+        boolean gameGoing = false;
         while(!gameGoing){
             System.out.println("Would you like to play another Hand?");
-            String input = scanner.nextLine();
-            if (positive.contains(input.toLowerCase())){
+            String input = SCANNER.nextLine();
+            if (POSITIVE.contains(input.toLowerCase())){
                 return true;
             }
-            else if (negative.contains(input.toLowerCase())){
+            else if (NEGATIVE.contains(input.toLowerCase())){
                 return false;
             }
             else{
@@ -51,11 +56,11 @@ public class UserInput {
         return false;
     }
     public Integer deckNumber(){
-        Boolean decided = false;
+        boolean decided = false;
         Integer integerInput = null;
         while(!decided){
             System.out.println("How many Decks?");
-            String input = scanner.nextLine();
+            String input = SCANNER.nextLine();
             try{
                 integerInput = Integer.parseInt(input);
                 decided = true;
@@ -65,6 +70,26 @@ public class UserInput {
             }
         }
         return integerInput;
+    }
+    public Boolean checkIfDoubleDown(){
+        boolean decided = false;
+        boolean dblDown = false;
+        while (!decided){
+            System.out.println("Double Down? (d/n)");
+            String input = SCANNER.nextLine();
+            if (DOUBLE_DOWN.contains(input.toLowerCase())){
+                decided = true;
+                dblDown = true;
+            }
+            else if (NEGATIVE.contains(input.toLowerCase())){
+                decided = true;
+                dblDown = false;
+            }
+            else{
+                System.out.println("Sorry I didn't understand that input.");
+            }
+        }
+        return dblDown;
     }
     public static void main(String[] args){
         UserInput userInput = new UserInput();

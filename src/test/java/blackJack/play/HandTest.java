@@ -13,6 +13,7 @@ class HandTest {
     Hand twentyHand;
     Hand nineteenHand;
     Hand tenHand;
+
     @BeforeEach
     void setUp(){
         List<Card> thirty = Arrays.asList(

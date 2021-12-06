@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInput {
+public class UserInputCheck {
     private final List<String> POSITIVE = new ArrayList<String>();
     private final List<String> NEGATIVE = new ArrayList<String>();
     private final List<String> DOUBLE_DOWN = new ArrayList<>();
     private final Scanner SCANNER = new Scanner(System.in);
 
-    UserInput(){
+
+    UserInputCheck(){
 
         POSITIVE.add("y");
         POSITIVE.add("yes");
@@ -20,6 +21,8 @@ public class UserInput {
 
         DOUBLE_DOWN.add("d");
         DOUBLE_DOWN.add("double");
+
+
     }
     public Boolean checkHitMe() {
         boolean resolved = false;
@@ -90,10 +93,6 @@ public class UserInput {
             }
         }
         return dblDown;
-    }
-    public static void main(String[] args){
-        UserInput userInput = new UserInput();
-        System.out.println(userInput.checkGameState());
     }
 
 }

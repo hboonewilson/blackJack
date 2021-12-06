@@ -43,6 +43,10 @@ public class Hand {
         setHandValue();
         return opposingNum < handValue;
     }
+    public boolean checkTie(Integer opposingNum) {
+        setHandValue();
+        return (opposingNum.equals(handValue));
+    }
     private void setHandValue(){
         int sum = 0;
         for (Card card: cards){
@@ -71,9 +75,4 @@ public class Hand {
         return summary;
     }
 
-
-    public boolean checkTie(Integer opposingNum) {
-        setHandValue();
-        return (opposingNum == handValue);
-    }
 }

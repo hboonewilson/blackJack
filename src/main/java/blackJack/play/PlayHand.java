@@ -1,75 +1,82 @@
 package blackJack.play;
-import java.util.Scanner;
 
 public class PlayHand {
     private final int NUM_DECKS;
-    private final UserInput USER_INPUT;
-    private final PlayerPot THE_PLAYER_POT;
-    private final TablePot THE_TABLE_POT;
+    private final UserInputCheck USER_INPUT;
     private final PrintDeckState PRINT_DECK_STATE;
-    private final Hand PLAYER_HAND;
-    private final Hand TABLE_HAND;
+    private final PrintPotState PRINT_POT_STATE;
 
-
+    private DoubleDownState doubleDownState;
+    private  PlayerPot thePlayerPot;
+    private  TablePot theTablePot;
+    private Hand playerHand;
+    private Hand tableHand;
+    private UserInputWager userInputWager;
     private int wager;
     private Deck theDeck;
 
-
     public PlayHand(Deck deck, PlayerPot playerPot, int numOfDecks){
         NUM_DECKS = numOfDecks;
-        USER_INPUT = new UserInput();
-        THE_PLAYER_POT = playerPot;
-        THE_TABLE_POT = new TablePot();
-        PRINT_DECK_STATE = new PrintDeckState(THE_PLAYER_POT);
-        TABLE_HAND = new Hand();
-        PLAYER_HAND = new Hand();
+        thePlayerPot = playerPot;
+        theTablePot = new TablePot();
 
+        PRINT_DECK_STATE = new PrintDeckState(thePlayerPot);
+        PRINT_POT_STATE = new PrintPotState(thePlayerPot, theTablePot);
+
+        tableHand = new Hand();
+        playerHand = new Hand();
+        USER_INPUT = new UserInputCheck();
+        userInputWager = new UserInputWager(thePlayerPot);
         theDeck = deck;
         theDeck.shuffle();
 
     }
 
     public void setWager() {
-        boolean wageSet = false;
-        while(!wageSet){
-            Scanner scanner = new Scanner(System.in);
-            System.out.printf("%nWager(You have %d left): ", THE_PLAYER_POT.getAmount());
-            wager = scanner.nextInt();
-            wageSet = THE_PLAYER_POT.wager(wager);
-        }
-        THE_TABLE_POT.addToAmount(wager*2);
-        System.out.println("Wage set: " + wager);
-        System.out.println("In the pot: " + THE_TABLE_POT.getAmount()+"\n");
+        wager = userInputWager.setWage();
+        theTablePot.addToAmount(wager*2);
+        PRINT_POT_STATE.printWagerAndTablePot(wager);
     }
     public Deck play(){
             if(theDeck.getSize() < 10){
                 theDeck = new Deck(NUM_DECKS);
                 theDeck.shuffle();
             }
-                PLAYER_HAND.addCard(theDeck.draw());
-                PLAYER_HAND.addCard(theDeck.draw());
+                playerHand.addCard(theDeck.draw());
+                playerHand.addCard(theDeck.draw());
 
 
-                TABLE_HAND.addCard(theDeck.draw());
-                TABLE_HAND.addCard(theDeck.draw());
+                tableHand.addCard(theDeck.draw());
+                tableHand.addCard(theDeck.draw());
 
 
-                PrintObject printObject = new PrintObject(PLAYER_HAND, TABLE_HAND);
+                PrintObject printObject = new PrintObject(playerHand, tableHand);
                 printObject.printPlayerAndSomeTableHand();
-                dblDown(USER_INPUT.checkIfDoubleDown());
-                Boolean hitMe = USER_INPUT.checkHitMe();
-                while(hitMe){
-                    PLAYER_HAND.addCard(theDeck.draw());
-                    if(PLAYER_HAND.checkIfBust()){
-                        return theDeck;
+                boolean dblDown = false;
+                if (USER_INPUT.checkIfDoubleDown()){
+                     doubleDownState = new DoubleDownState(thePlayerPot, theTablePot, playerHand, theDeck
+                    );
+                    dblDown =  doubleDownState.doublingDown(wager);
+                    if (dblDown){
+                        PRINT_POT_STATE.printDblDown(wager);
+                        doubleDownState.draw();
                     }
-                    printObject.printPlayerAndSomeTableHand();
-                    hitMe = USER_INPUT.checkHitMe();
                 }
-                Boolean overSeventeen = TABLE_HAND.checkIfOverSeventeen();
+                if(!dblDown) {
+                    Boolean hitMe = USER_INPUT.checkHitMe();
+                    while (hitMe) {
+                        playerHand.addCard(theDeck.draw());
+                        if (playerHand.checkIfBust()) {
+                            return theDeck;
+                        }
+                        printObject.printPlayerAndSomeTableHand();
+                        hitMe = USER_INPUT.checkHitMe();
+                    }
+                }
+                Boolean overSeventeen = tableHand.checkIfOverSeventeen();
                 while(!overSeventeen){
-                    TABLE_HAND.addCard(theDeck.draw());
-                    overSeventeen = TABLE_HAND.checkIfOverSeventeen();
+                    tableHand.addCard(theDeck.draw());
+                    overSeventeen = tableHand.checkIfOverSeventeen();
                 }
                 printObject.printPlayerAndTableHandsAndInfo();
         return theDeck;
@@ -77,55 +84,83 @@ public class PlayHand {
 
     public void determineWinner() {
         boolean tableWon = false;
-        boolean playerWon = true;
-        if(PLAYER_HAND.checkIfBust()){
+        boolean playerWon = false;
+        if(playerHand.checkIfBust()){
            System.out.println("player busted");
            playerWon = false;
            tableWon = true;
        }
-       else if (TABLE_HAND.checkIfBust()){
+       else if (tableHand.checkIfBust()){
            System.out.println("table busted");
            playerWon = true;
            tableWon = false;
        }
-       else if (PLAYER_HAND.checkIfCloser(TABLE_HAND.getHandValue())){
+       else if (playerHand.checkIfCloser(tableHand.getHandValue())){
            System.out.println("player is closer to 21!");
            playerWon = true;
            tableWon = false;
        }
-       else if (TABLE_HAND.checkIfCloser(PLAYER_HAND.getHandValue())){
+       else if (tableHand.checkIfCloser(playerHand.getHandValue())){
            System.out.println("table is closer to 21!");
            playerWon = false;
            tableWon = true;
        }
-       else if (TABLE_HAND.checkTie(PLAYER_HAND.getHandValue())){
+       else if (tableHand.checkTie(playerHand.getHandValue())){
            System.out.println("Push!");
            tableWon = true;
            playerWon = true;
         }
 
-
        if(tableWon && playerWon){
-           THE_PLAYER_POT.addToAmount(wager);
+           thePlayerPot.addToAmount(wager);
        }
        else if (playerWon){
-           THE_PLAYER_POT.addToAmount(THE_TABLE_POT.getAmount());
+           thePlayerPot.addToAmount(theTablePot.getAmount());
        }
        PRINT_DECK_STATE.printHandEnding(playerWon, tableWon);
     }
 
     private void dblDown(Boolean checkIfDoubleDown) {
         if (checkIfDoubleDown){
-            if(THE_PLAYER_POT.wager(wager)){
+            if(thePlayerPot.wager(wager)){
                 System.out.println("Doubling Down!");
-                THE_TABLE_POT.addToAmount(wager*2);
+                theTablePot.addToAmount(wager*2);
                 System.out.println("Wage set: " + wager);
-                System.out.println("In the pot: " + THE_TABLE_POT.getAmount()+"\n");
+                System.out.println("In the pot: " + theTablePot.getAmount()+"\n");
             }
             else{
                 System.out.println("Not enough to double down.");
-                System.out.println("Money left: " + THE_PLAYER_POT.getAmount());
+                System.out.println("Money left: " + thePlayerPot.getAmount());
             }
         }
+    }
+
+    public TablePot getTHE_TABLE_POT() {
+        return theTablePot;
+    }
+
+    public void setUserInputWager(UserInputWager userInputWager) {
+        this.userInputWager = userInputWager;
+    }
+
+    public void setPlayerHand(Hand playerHand) {
+        this.playerHand = playerHand;
+    }
+
+    public void setTableHand(Hand tableHand) {
+        this.tableHand = tableHand;
+    }
+
+
+    public void setThePlayerPot(PlayerPot thePlayerPot) {
+        this.thePlayerPot = thePlayerPot;
+    }
+
+    public void setTheTablePot(TablePot theTablePot) {
+        this.theTablePot = theTablePot;
+    }
+
+    public void setWager(int wager) {
+        this.wager = wager;
     }
 }

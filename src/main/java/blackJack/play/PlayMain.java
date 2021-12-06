@@ -3,14 +3,14 @@ package blackJack.play;
 public class PlayMain {
 
     public static void main(String[] args){
-        UserInput userInput = new UserInput();
+        PlayerPot playerPot = new PlayerPot();
+        UserInputCheck userInput = new UserInputCheck();
         System.out.println("Starting game!");
 
         Integer numberOfDecks = userInput.deckNumber();
         Deck theDeck = new Deck(numberOfDecks);
         System.out.printf("Initialized with %d cards.%n%n", theDeck.getSize());
 
-        PlayerPot playerPot = new PlayerPot();
         Boolean playing = true;
         while(playing){
             PlayHand hand = new PlayHand(theDeck, playerPot, numberOfDecks);

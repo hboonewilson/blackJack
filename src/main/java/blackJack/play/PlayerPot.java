@@ -14,7 +14,9 @@ class PlayerPot implements Pot{
     public Integer getAmount(){
         return this.amount;
     }
+
     public void addToAmount(Integer amountToAdd) {
+
         this.amount += amountToAdd;
     }
 

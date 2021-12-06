@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DeckTest {
 
@@ -19,8 +16,7 @@ class DeckTest {
 
     @Test
     void givenDrawIsCalledOnShuffledDeck_shouldReturnAceOfHearts(){
-        Card card = deck.draw();
-        Assertions.assertEquals("Ace of Hearts", card.toString());
+        Assertions.assertEquals("Ace of Hearts", deck.draw().toString());
     }
     @Test
     void givenSizeIsCalledThenDrawThenSizeAgian_shouldReturn52Then51(){

@@ -1,12 +1,18 @@
-package blackJack.play;
+package blackJack.play.playLogic;
+
+import blackJack.play.Deck;
+import blackJack.play.inputAndPrint.PrintObject;
+import blackJack.play.inputAndPrint.UserInputCheck;
+import blackJack.play.potClasses.PlayerPot;
+import blackJack.play.potClasses.TablePot;
 
 public class PlayHand {
     private final int NUM_DECKS;
     private UserInputCheck userInput;
     private PrintObject printObject;
     private DoubleDownState doubleDownState;
-    private  PlayerPot thePlayerPot;
-    private  TablePot theTablePot;
+    private PlayerPot thePlayerPot;
+    private TablePot theTablePot;
     private Hand playerHand;
     private Hand tableHand;
     private int wager;

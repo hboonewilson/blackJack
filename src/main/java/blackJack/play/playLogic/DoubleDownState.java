@@ -1,4 +1,8 @@
-package blackJack.play;
+package blackJack.play.playLogic;
+
+import blackJack.play.Deck;
+import blackJack.play.potClasses.PlayerPot;
+import blackJack.play.potClasses.TablePot;
 
 public class DoubleDownState {
     private Deck theDeck;
@@ -7,7 +11,7 @@ public class DoubleDownState {
 
     private Hand playerHand;
 
-    DoubleDownState(PlayerPot playerPot, TablePot tablePot, Hand playerHand, Deck deck){
+    public DoubleDownState(PlayerPot playerPot, TablePot tablePot, Hand playerHand, Deck deck){
         this.theDeck = deck;
         this.playerHand = playerHand;
         this.tablePot = tablePot;

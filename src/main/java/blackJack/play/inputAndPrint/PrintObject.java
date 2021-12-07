@@ -1,4 +1,8 @@
-package blackJack.play;
+package blackJack.play.inputAndPrint;
+
+import blackJack.play.playLogic.Hand;
+import blackJack.play.potClasses.PlayerPot;
+import blackJack.play.potClasses.TablePot;
 
 import java.util.List;
 

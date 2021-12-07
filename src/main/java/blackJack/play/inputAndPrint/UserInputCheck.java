@@ -1,4 +1,6 @@
-package blackJack.play;
+package blackJack.play.inputAndPrint;
+
+import blackJack.play.potClasses.PlayerPot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class UserInputCheck {
     private final Scanner SCANNER = new Scanner(System.in);
 
 
-    UserInputCheck(){
+    public UserInputCheck(){
 
         POSITIVE.add("y");
         POSITIVE.add("yes");

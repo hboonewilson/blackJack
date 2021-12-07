@@ -1,9 +1,8 @@
 package blackJack.play;
 
+import blackJack.play.cardClasses.Suit;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SuitTest {
     @Test

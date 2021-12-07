@@ -1,5 +1,9 @@
 package blackJack.play;
 
+import blackJack.play.cardClasses.Card;
+import blackJack.play.cardClasses.Face;
+import blackJack.play.cardClasses.Suit;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

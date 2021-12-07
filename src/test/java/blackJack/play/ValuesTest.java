@@ -1,5 +1,7 @@
 package blackJack.play;
 
+import blackJack.play.cardClasses.Face;
+import blackJack.play.playLogic.Values;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,6 @@
 package blackJack.play;
 
+import blackJack.play.potClasses.PlayerPot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

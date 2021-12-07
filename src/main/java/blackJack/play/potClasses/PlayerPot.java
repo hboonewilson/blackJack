@@ -1,6 +1,8 @@
-package blackJack.play;
+package blackJack.play.potClasses;
 
-class PlayerPot implements Pot{
+import blackJack.play.potClasses.Pot;
+
+public class PlayerPot implements Pot {
     private Integer amount;
 
     public PlayerPot(Integer amount){

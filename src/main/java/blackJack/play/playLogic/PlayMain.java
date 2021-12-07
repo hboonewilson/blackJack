@@ -1,4 +1,8 @@
-package blackJack.play;
+package blackJack.play.playLogic;
+
+import blackJack.play.Deck;
+import blackJack.play.inputAndPrint.UserInputCheck;
+import blackJack.play.potClasses.PlayerPot;
 
 public class PlayMain {
 

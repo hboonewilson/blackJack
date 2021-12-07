@@ -1,4 +1,7 @@
-package blackJack.play;
+package blackJack.play.playLogic;
+
+import blackJack.play.cardClasses.Card;
+import blackJack.play.cardClasses.Face;
 
 import java.util.ArrayList;
 import java.util.HashMap;

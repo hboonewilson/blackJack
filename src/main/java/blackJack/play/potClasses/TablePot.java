@@ -1,6 +1,8 @@
-package blackJack.play;
+package blackJack.play.potClasses;
 
-public class TablePot implements Pot{
+import blackJack.play.potClasses.Pot;
+
+public class TablePot implements Pot {
 
     private Integer amount = 0;
 

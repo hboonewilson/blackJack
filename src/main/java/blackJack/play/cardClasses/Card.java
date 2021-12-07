@@ -1,4 +1,4 @@
-package blackJack.play;
+package blackJack.play.cardClasses;
 
 public class Card {
     private final Face face;

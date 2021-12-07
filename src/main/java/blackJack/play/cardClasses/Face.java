@@ -1,4 +1,4 @@
-package blackJack.play;
+package blackJack.play.cardClasses;
 
 public enum Face {
     ACE("Ace"),

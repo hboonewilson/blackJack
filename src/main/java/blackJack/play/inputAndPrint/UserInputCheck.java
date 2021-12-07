@@ -1,16 +1,19 @@
-package blackJack.play;
+package blackJack.play.inputAndPrint;
+
+import blackJack.play.potClasses.PlayerPot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInput {
+public class UserInputCheck {
     private final List<String> POSITIVE = new ArrayList<String>();
     private final List<String> NEGATIVE = new ArrayList<String>();
     private final List<String> DOUBLE_DOWN = new ArrayList<>();
     private final Scanner SCANNER = new Scanner(System.in);
 
-    UserInput(){
+
+    public UserInputCheck(){
 
         POSITIVE.add("y");
         POSITIVE.add("yes");
@@ -20,6 +23,8 @@ public class UserInput {
 
         DOUBLE_DOWN.add("d");
         DOUBLE_DOWN.add("double");
+
+
     }
     public Boolean checkHitMe() {
         boolean resolved = false;
@@ -91,9 +96,18 @@ public class UserInput {
         }
         return dblDown;
     }
-    public static void main(String[] args){
-        UserInput userInput = new UserInput();
-        System.out.println(userInput.checkGameState());
+    public Integer setWage(PlayerPot playerPot){
+        boolean wageSet = false;
+        int wager = 0;
+        while(!wageSet){
+            Scanner scanner = new Scanner(System.in);
+            System.out.printf("%nWager(You have %d left): ", playerPot.getAmount());
+            wager = scanner.nextInt();
+            wageSet = playerPot.wager(wager);
+            if (!wageSet){
+                System.out.printf("%nYou don't have enough money (You have %d left): ", playerPot.getAmount());
+            }
+        }
+        return wager;
     }
-
 }

@@ -1,19 +1,23 @@
 package blackJack.play;
 
+import blackJack.play.cardClasses.Card;
+import blackJack.play.cardClasses.Face;
+import blackJack.play.cardClasses.Suit;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Deck {
 
-    private List<Card> cards = new ArrayList<>();
+    private final List<Card> CARDS = new ArrayList<>();
 
     public Deck(){
 
         for(Face face: Face.values()) {
 
             for(Suit suit: Suit.values()){
-                cards.add(new Card(face,suit));
+                CARDS.add(new Card(face,suit));
             }
         }
     }
@@ -22,23 +26,23 @@ public class Deck {
             for(Face face: Face.values()) {
 
                 for(Suit suit: Suit.values()){
-                    cards.add(new Card(face,suit));
+                    CARDS.add(new Card(face,suit));
                 }
             }
         }
     }
 
     public List<Card> getDeck(){
-        return cards;
+        return CARDS;
     }
 
     public void shuffle(){
-        Collections.shuffle(cards);
+        Collections.shuffle(CARDS);
     }
     public Card draw(){
-       return cards.remove(0);
+       return CARDS.remove(0);
     }
     public int getSize(){
-        return cards.size();
+        return CARDS.size();
     }
 }

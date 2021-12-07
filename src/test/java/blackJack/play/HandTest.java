@@ -1,57 +1,77 @@
 package blackJack.play;
 
+import blackJack.play.cardClasses.Card;
+import blackJack.play.cardClasses.Face;
+import blackJack.play.cardClasses.Suit;
+import blackJack.play.playLogic.Hand;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 class HandTest {
+    Hand thirtyHand;
+    Hand twentyHand;
+    Hand nineteenHand;
+    Hand tenHand;
+
+    @BeforeEach
+    void setUp(){
+        List<Card> thirty = Arrays.asList(
+                new Card(Face.KING, Suit.CLUB),
+                new Card(Face.KING, Suit.CLUB),
+                new Card(Face.KING, Suit.CLUB));
+        List<Card> twenty = Arrays.asList(
+                new Card(Face.KING, Suit.CLUB),
+                new Card(Face.KING, Suit.CLUB)
+        );
+        List<Card> nineteen = Arrays.asList(
+                new Card(Face.ACE, Suit.CLUB),
+                new Card(Face.ACE, Suit.CLUB),
+                new Card(Face.ACE, Suit.CLUB),
+                new Card(Face.ACE, Suit.CLUB),
+                new Card(Face.FIVE, Suit.CLUB)
+        );
+        List<Card> ten = Arrays.asList(
+                new Card(Face.TWO, Suit.CLUB),
+                new Card(Face.EIGHT, Suit.CLUB)
+        );
+        thirtyHand = new Hand(thirty);
+        twentyHand = new Hand(twenty);
+        nineteenHand = new Hand(nineteen);
+        tenHand = new Hand(ten);
+    }
 
     @Test
     void givenSetHandValueHand_shouldReturnRightNumber(){
-        Hand hand = new Hand();
-
-        Card cardOne = new Card(Face.ACE, Suit.CLUB);
-        Card cardTwo = new Card(Face.ACE, Suit.CLUB);
-        Card cardThree = new Card(Face.FIVE, Suit.CLUB);
-
-        hand.addCard(cardOne);
-        hand.addCard(cardTwo);
-        hand.addCard(cardThree);
-        
-
-        Assertions.assertEquals(17, hand.getHandValue());
+        Assertions.assertEquals(30, thirtyHand.getHandValue());
+        Assertions.assertEquals(20, twentyHand.getHandValue());
     }
     @Test
     void givenSetHandValueHand_shouldReturnNineteen(){
-        Hand hand = new Hand();
-
-        Card cardOne = new Card(Face.ACE, Suit.CLUB);
-        Card cardTwo = new Card(Face.ACE, Suit.CLUB);
-        Card cardThree = new Card(Face.ACE, Suit.CLUB);
-        Card cardFour = new Card(Face.ACE, Suit.CLUB);
-        Card cardFive = new Card(Face.FIVE, Suit.CLUB);
-
-        hand.addCard(cardOne);
-        hand.addCard(cardTwo);
-        hand.addCard(cardThree);
-        hand.addCard(cardFour);
-        hand.addCard(cardFive);
-
-        Assertions.assertEquals(19, hand.getHandValue());
+        Assertions.assertEquals(19, nineteenHand.getHandValue());
     }
     @Test
     void givenCheckBust_shouldReturnTrueIfOverTwentyOne(){
-        Hand hand = new Hand();
-        hand.addCard(new Card(Face.KING, Suit.CLUB));
-        hand.addCard(new Card(Face.KING, Suit.CLUB));
-        hand.addCard(new Card(Face.KING, Suit.CLUB));
-
-        Hand twoHand = new Hand();
-        twoHand.addCard(new Card(Face.KING, Suit.CLUB));
-        twoHand.addCard(new Card(Face.KING, Suit.CLUB));
-
-        Assertions.assertTrue(hand.checkIfBust());
-        Assertions.assertFalse(twoHand.checkIfBust());
+        Assertions.assertTrue(thirtyHand.checkIfBust());
+        Assertions.assertFalse(twentyHand.checkIfBust());
     }
-
+    @Test
+    void givenCheckIfOverSeventeen_shouldReturnTrueIfOverFalseIfUnder(){
+        Assertions.assertFalse(tenHand.checkIfOverSeventeen());
+        Assertions.assertTrue(twentyHand.checkIfOverSeventeen());
+    }
+    @Test
+    void givenCheckIfCloser_shouldReturnTrueIfHandIsCloserFalseIfFurther(){
+        Assertions.assertTrue(twentyHand.checkIfCloser(tenHand.getHandValue()));
+        Assertions.assertFalse(tenHand.checkIfCloser(twentyHand.getHandValue()));
+    }
+    @Test
+    void givenCheckTie_shouldReturnTrueIfTheyAreTheSame(){
+        Hand twentyHandNew = twentyHand;
+        Assertions.assertTrue(twentyHandNew.checkTie(twentyHand.getHandValue()));
+    }
 }

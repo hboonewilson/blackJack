@@ -1,4 +1,4 @@
-package blackJack.play;
+package blackJack.play.cardClasses;
 
 public enum Face {
     ACE("Ace"),
@@ -15,11 +15,13 @@ public enum Face {
     QUEEN("Queen"),
     KING("King"),;
 
-    private String name;
-    private Face(String s){
-        name = s;
+    private final String NAME;
+
+    Face(String s){
+        NAME = s;
     }
+
     public String toString() {
-        return name;
+        return NAME;
     }
 }

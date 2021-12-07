@@ -1,4 +1,4 @@
-package blackJack.play;
+package blackJack.play.potClasses;
 
 public interface Pot {
 

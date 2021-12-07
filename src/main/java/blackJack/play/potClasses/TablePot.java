@@ -1,10 +1,15 @@
-package blackJack.play;
+package blackJack.play.potClasses;
 
-public class TablePot implements Pot{
+import blackJack.play.potClasses.Pot;
+
+public class TablePot implements Pot {
 
     private Integer amount = 0;
 
     public TablePot(){}
+    public TablePot(int amount){
+        this.amount = amount;
+    }
 
     public void wipe(){
         amount = 0;

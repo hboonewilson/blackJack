@@ -1,4 +1,7 @@
-package blackJack.play;
+package blackJack.play.playLogic;
+
+import blackJack.play.cardClasses.Card;
+import blackJack.play.cardClasses.Face;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +46,10 @@ public class Hand {
         setHandValue();
         return opposingNum < handValue;
     }
+    public boolean checkTie(Integer opposingNum) {
+        setHandValue();
+        return (opposingNum.equals(handValue));
+    }
     private void setHandValue(){
         int sum = 0;
         for (Card card: cards){
@@ -71,9 +78,4 @@ public class Hand {
         return summary;
     }
 
-
-    public boolean checkTie(Integer opposingNum) {
-        setHandValue();
-        return (opposingNum == handValue);
-    }
 }

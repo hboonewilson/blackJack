@@ -2,16 +2,13 @@ package blackJack.play;
 
 public class PlayHand {
     private final int NUM_DECKS;
-    private final UserInputCheck USER_INPUT;
-    private final PrintDeckState PRINT_DECK_STATE;
-    private final PrintPotState PRINT_POT_STATE;
-
+    private UserInputCheck userInput;
+    private PrintObject printObject;
     private DoubleDownState doubleDownState;
     private  PlayerPot thePlayerPot;
     private  TablePot theTablePot;
     private Hand playerHand;
     private Hand tableHand;
-    private UserInputWager userInputWager;
     private int wager;
     private Deck theDeck;
 
@@ -20,22 +17,19 @@ public class PlayHand {
         thePlayerPot = playerPot;
         theTablePot = new TablePot();
 
-        PRINT_DECK_STATE = new PrintDeckState(thePlayerPot);
-        PRINT_POT_STATE = new PrintPotState(thePlayerPot, theTablePot);
-
+        printObject = new PrintObject();
         tableHand = new Hand();
         playerHand = new Hand();
-        USER_INPUT = new UserInputCheck();
-        userInputWager = new UserInputWager(thePlayerPot);
+        userInput = new UserInputCheck();
         theDeck = deck;
         theDeck.shuffle();
 
     }
 
     public void setWager() {
-        wager = userInputWager.setWage();
+        wager = userInput.setWage(thePlayerPot);
         theTablePot.addToAmount(wager*2);
-        PRINT_POT_STATE.printWagerAndTablePot(wager);
+        printObject.printWagerAndTablePot(wager, theTablePot);
     }
     public Deck play(){
             if(theDeck.getSize() < 10){
@@ -50,27 +44,27 @@ public class PlayHand {
                 tableHand.addCard(theDeck.draw());
 
 
-                PrintObject printObject = new PrintObject(playerHand, tableHand);
-                printObject.printPlayerAndSomeTableHand();
+                PrintObject printObject = new PrintObject();
+                printObject.printPlayerAndSomeTableHand(playerHand, tableHand);
                 boolean dblDown = false;
-                if (USER_INPUT.checkIfDoubleDown()){
+                if (userInput.checkIfDoubleDown()){
                      doubleDownState = new DoubleDownState(thePlayerPot, theTablePot, playerHand, theDeck
                     );
                     dblDown =  doubleDownState.doublingDown(wager);
                     if (dblDown){
-                        PRINT_POT_STATE.printDblDown(wager);
+                        printObject.printDblDown(wager, theTablePot);
                         doubleDownState.draw();
                     }
                 }
                 if(!dblDown) {
-                    Boolean hitMe = USER_INPUT.checkHitMe();
+                    Boolean hitMe = userInput.checkHitMe();
                     while (hitMe) {
                         playerHand.addCard(theDeck.draw());
                         if (playerHand.checkIfBust()) {
                             return theDeck;
                         }
-                        printObject.printPlayerAndSomeTableHand();
-                        hitMe = USER_INPUT.checkHitMe();
+                        printObject.printPlayerAndSomeTableHand(playerHand, tableHand);
+                        hitMe = userInput.checkHitMe();
                     }
                 }
                 Boolean overSeventeen = tableHand.checkIfOverSeventeen();
@@ -78,7 +72,7 @@ public class PlayHand {
                     tableHand.addCard(theDeck.draw());
                     overSeventeen = tableHand.checkIfOverSeventeen();
                 }
-                printObject.printPlayerAndTableHandsAndInfo();
+                printObject.printPlayerAndTableHandsAndInfo(playerHand, tableHand);
         return theDeck;
     }
 
@@ -117,7 +111,7 @@ public class PlayHand {
        else if (playerWon){
            thePlayerPot.addToAmount(theTablePot.getAmount());
        }
-       PRINT_DECK_STATE.printHandEnding(playerWon, tableWon);
+       printObject.printHandEnding(playerWon, tableWon, thePlayerPot);
     }
 
     private void dblDown(Boolean checkIfDoubleDown) {
@@ -138,9 +132,8 @@ public class PlayHand {
     public TablePot getTHE_TABLE_POT() {
         return theTablePot;
     }
-
-    public void setUserInputWager(UserInputWager userInputWager) {
-        this.userInputWager = userInputWager;
+    public void setUserInput(UserInputCheck user_input){
+        this.userInput = user_input;
     }
 
     public void setPlayerHand(Hand playerHand) {

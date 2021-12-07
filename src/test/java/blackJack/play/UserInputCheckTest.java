@@ -4,6 +4,7 @@ package blackJack.play;
 import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,15 +13,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-
-@ExtendWith(MockitoExtension.class)
 @Disabled
+@ExtendWith(MockitoExtension.class)
 class UserInputCheckTest {
     UserInputCheck userInput = new UserInputCheck();
 
     @ParameterizedTest
     @ValueSource(strings = {"y", "Y","yes", "YES"})
-    void givenCheckHitMe_whenInputIsYes_shouldReturnTrue(String input){
+    void givenCheckHitMe_whenInputIsYes_shouldReturnTrue(){
+        String input = "YES";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         Assertions.assertTrue(userInput.checkHitMe());

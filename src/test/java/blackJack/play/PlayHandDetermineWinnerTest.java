@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,7 +24,7 @@ class PlayHandDetermineWinnerTest {
     static Hand tenHand;
 
     @Mock
-    UserInputWager mockUserInput;
+    UserInputCheck mockUserInput;
 
 
     @BeforeAll
@@ -55,8 +56,8 @@ class PlayHandDetermineWinnerTest {
     }
     @Test
     void givenSetWager_shouldSetTheTablePotCorrectly(){
-        playHand.setUserInputWager(mockUserInput);
-        when(mockUserInput.setWage()).thenReturn(20);
+        playHand.setUserInput(mockUserInput);
+        when(mockUserInput.setWage(any())).thenReturn(20);
         playHand.setWager();
         Assertions.assertEquals(40, playHand.getTHE_TABLE_POT().getAmount());
     }

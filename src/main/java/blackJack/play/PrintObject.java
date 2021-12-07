@@ -3,22 +3,13 @@ package blackJack.play;
 import java.util.List;
 
 public class PrintObject {
-    private final Hand playerHand;
-    private final Hand tableHand;
 
-    private  List<String> playerList;
-    private  List<String> tableList;
+    public PrintObject(){}
+    public void printPlayerAndSomeTableHand(Hand playerHand, Hand tableHand){
 
-    public PrintObject(Hand playerHand, Hand tableHand){
-        this.playerHand = playerHand;
-        this.tableHand = tableHand;
+        List<String> playerList = playerHand.getCards();
+        List<String> tableList = tableHand.getCards();
 
-        this.playerList = playerHand.getCards();
-        this.tableList = tableHand.getCards();
-    }
-    public void printPlayerAndSomeTableHand(){
-        //This is the first  to be used when hiding the tables' second card
-        setLists();
         System.out.printf("Player Hand (%d): %n", playerHand.getHandValue());
         for (String card : playerList){
             System.out.println(card);
@@ -28,8 +19,9 @@ public class PrintObject {
         System.out.println("Second card unknown");
     }
 
-    public void printPlayerAndTableHandsAndInfo(){
-        setLists();
+    public void printPlayerAndTableHandsAndInfo(Hand playerHand, Hand tableHand){
+        List<String> playerList = playerHand.getCards();
+        List<String> tableList = tableHand.getCards();
         System.out.printf("Player Hand (%d): %n", playerHand.getHandValue());
         for (String card : playerList){
             System.out.println(card);
@@ -41,9 +33,25 @@ public class PrintObject {
         }
         System.out.println();
     }
-    private void setLists(){
-        playerList = playerHand.getCards();
-        tableList = tableHand.getCards();
+    public void printWagerAndTablePot(Integer wager, TablePot tablePot){
+        System.out.println("Wage set: " + wager);
+        System.out.println("In the pot: " + tablePot.getAmount()+"\n");
+    }
+
+    public void printDblDown(Integer wager, TablePot tablePot) {
+        System.out.printf("Doubling down! Wager: %d%n", wager);
+        System.out.printf("The pot is doubled: %d%n", tablePot.getAmount());
+    }
+    public void printHandEnding(boolean playerWon, boolean tableWon, PlayerPot playerPot) {
+        if (playerWon && tableWon){
+            System.out.printf("%n%nPush.%nPlayer Pot:%d%n%n", playerPot.getAmount());
+        }
+        else if (!playerWon && tableWon){
+            System.out.printf("%n%nTable Wins.%nPlayer Pot:%d%n%n", playerPot.getAmount());
+        }
+        else if (playerWon){
+            System.out.printf("%n%nPlayer Wins!%nPlayer Pot:%d%n%n", playerPot.getAmount());
+        }
     }
 
 }

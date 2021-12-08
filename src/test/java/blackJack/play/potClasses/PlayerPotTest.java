@@ -1,4 +1,4 @@
-package blackJack.play;
+package blackJack.play.potClasses;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
